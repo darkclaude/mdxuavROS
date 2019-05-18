@@ -49,7 +49,13 @@ if(nodeReady && notconnected){
 }
 },2000);
 
-
+function publishData(payload){
+  //pub.publish({ data: "METOO" });
+   navpub.publish(payload);
+    //console.log(payload);
+  
+ 
+}
 
 function portConnection(portNo, speed){
   console.log(portNo,speed)
@@ -60,7 +66,7 @@ function portConnection(portNo, speed){
     //console.log('serial port open');
     notconnected=false;
     const msg = new std_msgs.msg.String();
-    msg.connected= !notconnected;
+    msg.data= (!notconnected).toString();
     conpub.publish(msg);
     console.log("Connected to Nav Node MCU");
   });
@@ -78,9 +84,11 @@ function portConnection(portNo, speed){
    // var payloadJson = JSON.stringify(payload);
     const msg = new std_msgs.msg.String();
     //var keys = Object.keys(payload)
-   msg.data = line.toString();
-   //console.log(msg)
-    navpub.publish(msg);
+   msg.data = line;
+   //console.log(line.toString());
+   publishData(msg);
+
+
    // console.log(payload);
    
   }
@@ -96,21 +104,21 @@ function portConnection(portNo, speed){
    console.log('Error: ', err.message);
    notconnected=true;
    const msg = new std_msgs.msg.String();
-    msg.connected= !notconnected;
+   msg.data= (!notconnected).toString();
     conpub.publish(msg);
   })
   port.on('disconnect', function() {
   console.log('disconnected','Device Connection Lost');
   notconnected=true;
   const msg = new std_msgs.msg.String();
-  msg.connected= !notconnected;
+  msg.data= (!notconnected).toString();
   conpub.publish(msg);
   })
   port.on('close', function(err) {
     //console.log('Error: ', err.message);
     notconnected = true;
     const msg = new std_msgs.msg.String();
-    msg.connected= !notconnected;
+    msg.data= (!notconnected).toString();
     conpub.publish(msg);
    console.log('disconnected','Device Disconnected');
   })

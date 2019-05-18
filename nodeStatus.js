@@ -5,20 +5,23 @@ rosnodejs.initNode('/nodeStatus')
   // do stuff
 });
 
-const states = {navnode: false, avionics: false};
+var states = {navnode: false, avionics: false};
 const nh = rosnodejs.nh;
+const pub = nh.advertise('/nodes_status', 'std_msgs/String');
+pub.publish({data : JSON.stringify(states)})
 
-const nav_nodeSub = nh.subscribe('/navConUpdate', 'std_msgs/String', (msg) => {
-   //  var data = JSON.parse(msg.data);
-     states.navnode= msg.data;
-     console.log(msg);
-});
-
+const status_nav_nodeSub = nh.subscribe('/navConUpdate', 'std_msgs/String', (msg) => {
+    //  var data = JSON.parse(msg.data);
+      states.navnode= msg.data;
+      pub.publish({data : JSON.stringify(states)})
+      console.log(states);
+ });
 const avionics_nodeSub = nh.subscribe('/avionicsConUpdate', 'std_msgs/String', (msg) => {
-    states.navnode= msg.connected;
+    states.avionics= msg.data;
+    pub.publish({data : JSON.stringify(states)})
 });
 
 
 
-//const pub = nh.advertise('/chatter2', 'std_msgs/String');
+
 
