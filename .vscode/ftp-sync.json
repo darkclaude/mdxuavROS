@@ -1,6 +1,6 @@
 {
     "remotePath": "/home/ubuntu/ros",
-    "host": "192.168.3.53",
+    "host": "192.168.4.56",
     "username": "ubuntu",
     "password": "ubuntu",
     "port": 22,

@@ -22,9 +22,9 @@ payloadA['esc1temp']=26;
 payloadA['esc2temp']=26;
 payloadA['battemp']=35;
 payloadA['envtemp']=22;
-payloadA['mission']="";
+payloadA['mission']="KEEP";
 payloadA['navTotalbytes']=0;
-payloadA['']=22;
+payloadA['Totalbytes']=22;
 
 var payload  = {};
 
@@ -38,7 +38,16 @@ function updateStatus(msg){
  statusData = msg;
 }
 
-const data_nav_nodeSub = mcu_data_acc.subscribe('/navData', 'std_msgs/String', (msg) => {
+const rpm_data_sub = mcu_data_acc.subscribe('/rpmData', 'std_msgs/String', (msg) => {
+    var data = JSON.parse(msg.data);
+    updateRPM(data);
+  });
+  function updateRPM(msg){
+   payloadA["engine1"] = msg.engine1;
+   payloadA["engine2"] = msg.engine2;
+  }
+  
+const nav_data_sub = mcu_data_acc.subscribe('/navData', 'std_msgs/String', (msg) => {
     
     //  var data =;
     var safe = true;
@@ -70,8 +79,8 @@ const data_nav_nodeSub = mcu_data_acc.subscribe('/navData', 'std_msgs/String', (
          payloadA["nodeProps"] = statusData.avionics;    
       
        for(n of nm){
-        payloadA[n] =  navnodeData[s];  
+        payloadA[n] =  navnodeData[n];  
       }
       pub.publish({data : JSON.stringify(payloadA)}); 
 
-   },50);
+   },20);
