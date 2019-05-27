@@ -20,7 +20,16 @@ io.on('connection', client => {
          //console.log(rpm.engine1)
     });
   });
-  
+  const config_data_sub = sensorHandler.subscribe(
+    "/sensors_config",
+    "std_msgs/String",
+    msg => {
+      var data = JSON.parse(msg.data);
+     update_config(data);
+    }
+  );
+  function update_config(data) { 
+  }
 //rosnodejs.loadAllPackages();
 var boot = false;
 

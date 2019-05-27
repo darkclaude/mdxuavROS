@@ -70,6 +70,7 @@ updateRPMEngine1();
 
 setInterval(function(){
   socket.emit("rpm", JSON.stringify(rpm));
+  //console.log(rpm);
 },5);
 
 function updateRPMEngine2(){

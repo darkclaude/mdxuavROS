@@ -10,7 +10,16 @@ rosnodejs.initNode('/flightStatus')
 const flight_tracker = rosnodejs.nh;
 const pub = flight_tracker.advertise('/liveflight_status', 'std_msgs/String');
 
-
+const config_data_sub = flight_tracker.subscribe(
+  "/flight_tracker_config",
+  "std_msgs/String",
+  msg => {
+    var data = JSON.parse(msg.data);
+   update_config(data);
+  }
+);
+function update_config(data) { 
+}
 
 setInterval(function(){
     // log.info("HELLO")
@@ -58,5 +67,5 @@ setInterval(function(){
      }
    });
      
-   },500);
+   },50000);
    

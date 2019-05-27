@@ -33,7 +33,7 @@ if(nodeReady && notconnected){
      // var portnames =[];
    
       for(var p of ports){
-        if(p['comName'].toLowerCase().indexOf("com")>=0 || p['comName'].toLowerCase().indexOf("usb0")>=0){
+        if( p['productId']=="7523" || p['productId']=="2303"){
         portnames.push(p['comName']);
         portConnection(p['comName'],250000);
         }
@@ -47,7 +47,7 @@ if(nodeReady && notconnected){
   
   }
 }
-},2000);
+},500);
 
 function publishData(payload){
   //pub.publish({ data: "METOO" });
@@ -59,9 +59,12 @@ function publishData(payload){
 
 function portConnection(portNo, speed){
   console.log(portNo,speed)
+  try{
   port = new SerialPort(portNo,{ baudRate: speed });
+
   parser = port.pipe(new Readline({ delimiter: '#' }));
-  
+  }catch(err){}
+
   port.on("open", () => {
     //console.log('serial port open');
     notconnected=false;
@@ -93,7 +96,7 @@ function portConnection(portNo, speed){
    
   }
    catch(err){
-     console.error(err)
+    // console.error(err)
      dnt =true;
    }
     
@@ -101,11 +104,11 @@ function portConnection(portNo, speed){
   });
   
   port.on('error', function(err) {
-   console.log('Error: ', err.message);
-   notconnected=true;
-   const msg = new std_msgs.msg.String();
-   msg.data= (!notconnected).toString();
-    conpub.publish(msg);
+  // console.log('Error: ', err.message);
+   //notconnected=true;
+  //  const msg = new std_msgs.msg.String();
+  //  msg.data= (!notconnected).toString();
+  //   conpub.publish(msg);
   })
   port.on('disconnect', function() {
   console.log('disconnected','Device Connection Lost');

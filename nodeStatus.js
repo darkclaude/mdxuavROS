@@ -5,7 +5,7 @@ rosnodejs.initNode('/nodeStatus')
   // do stuff
 });
 
-var states = {navnode: false, avionics: false};
+var states = {navnode: false, propnode: false};
 const nh = rosnodejs.nh;
 const pub = nh.advertise('/nodes_status', 'std_msgs/String');
 pub.publish({data : JSON.stringify(states)})
@@ -16,8 +16,8 @@ const status_nav_nodeSub = nh.subscribe('/navConUpdate', 'std_msgs/String', (msg
       pub.publish({data : JSON.stringify(states)})
       console.log(states);
  });
-const avionics_nodeSub = nh.subscribe('/avionicsConUpdate', 'std_msgs/String', (msg) => {
-    states.avionics= msg.data;
+const prop_nodeSub = nh.subscribe('/engineConUpdate', 'std_msgs/String', (msg) => {
+    states.propnode= msg.data;
     pub.publish({data : JSON.stringify(states)})
 });
 
