@@ -44,7 +44,7 @@
     "rosnodejs": "^3.0.0",
     "serialport": "^7.1.5",
     "sha1": "^1.1.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
